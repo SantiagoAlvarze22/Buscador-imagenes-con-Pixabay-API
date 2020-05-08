@@ -8,6 +8,8 @@ function App() {
   //State de la app
   const [busqueda, setBusqueda] = useState('');
   const [imagenes, setImagenes] = useState([]);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
 
   useEffect(() => {
     const consultarApi = async () => {
@@ -20,6 +22,13 @@ function App() {
       const respuesta = await axios.get(url);
 
       setImagenes(respuesta.data.hits)
+
+      //calcular el total de paginas 
+      const calcularTotalPaginas = Math.ceil(respuesta.data.totalHits / imagenesPorPagina);
+
+      setTotalPaginas(calcularTotalPaginas)
+
+
     }
     consultarApi();
   }, [busqueda])
