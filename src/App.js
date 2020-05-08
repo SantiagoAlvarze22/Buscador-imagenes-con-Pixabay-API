@@ -17,7 +17,7 @@ function App() {
       if (busqueda === '') return;
       const imagenesPorPagina = 30;
       const key = '16446448-e873075e505140534b72fb6b7';
-      const url = `https://pixabay.com/api/?key=${key}&q=${busqueda}&per_page=${imagenesPorPagina}`
+      const url = `https://pixabay.com/api/?key=${key}&q=${busqueda}&per_page=${imagenesPorPagina}&page=${paginaActual}`
 
       const respuesta = await axios.get(url);
 
@@ -25,13 +25,15 @@ function App() {
 
       //calcular el total de paginas 
       const calcularTotalPaginas = Math.ceil(respuesta.data.totalHits / imagenesPorPagina);
-
       setTotalPaginas(calcularTotalPaginas)
 
+      //Mover La pantalla hacia arriba 
+      const jumbotron = document.querySelector('.jumbotron');
+      jumbotron.scrollIntoView({ behavior: 'smooth' })
 
     }
     consultarApi();
-  }, [busqueda])
+  }, [busqueda, paginaActual])
 
   //Definir la pagina anterior
   const paginaAnterior = () => {
@@ -66,16 +68,22 @@ function App() {
         <ListadoImagenes
           imagenes={imagenes}
         />
-        <button
-          type="button"
-          className="bbtn btn-info mr-1"
-          onClick={paginaAnterior}
-        >Anterior &laquo;</button>
-        <button
-          type="button"
-          className="bbtn btn-info"
-          onClick={paginaSiguiente}
-        >Siguiente &raquo;</button>
+
+        {(paginaActual === 1) ? null :
+          <button
+            type="button"
+            className="bbtn btn-info mr-1"
+            onClick={paginaAnterior}
+          >Anterior &laquo;</button>
+        }
+        {(paginaActual === totalPaginas) ? null :
+          <button
+            type="button"
+            className="bbtn btn-info"
+            onClick={paginaSiguiente}
+          >Siguiente &raquo;</button>
+        }
+
       </div>
     </div>
   );
