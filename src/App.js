@@ -33,6 +33,27 @@ function App() {
     consultarApi();
   }, [busqueda])
 
+  //Definir la pagina anterior
+  const paginaAnterior = () => {
+    const nuevaPaginaActual = paginaActual - 1;
+
+    //para no pasar a numeros negativos 
+    if (nuevaPaginaActual === 0) return;
+
+    setPaginaActual(nuevaPaginaActual)
+  }
+
+  //Definir la pagina siguiente
+  const paginaSiguiente = () => {
+    const nuevaPaginaActual = paginaActual + 1;
+
+    //para indicar cuando es la utlima pagina
+    if (nuevaPaginaActual > totalPaginas) return;
+
+    setPaginaActual(nuevaPaginaActual)
+  }
+
+
   return (
     <div className="container">
       <div className="jumbotron">
@@ -45,6 +66,16 @@ function App() {
         <ListadoImagenes
           imagenes={imagenes}
         />
+        <button
+          type="button"
+          className="bbtn btn-info mr-1"
+          onClick={paginaAnterior}
+        >Anterior &laquo;</button>
+        <button
+          type="button"
+          className="bbtn btn-info"
+          onClick={paginaSiguiente}
+        >Siguiente &raquo;</button>
       </div>
     </div>
   );
