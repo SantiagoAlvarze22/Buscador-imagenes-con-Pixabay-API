@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Formulario from './components/Formulario'
+import Formulario from './components/Formulario';
+import ListadoImagenes from './components/ListadoImagenes';
 import axios from 'axios';
 
 function App() {
 
   //State de la app
-  const [busqueda, setBusqueda] = useState('')
+  const [busqueda, setBusqueda] = useState('');
+  const [imagenes, setImagenes] = useState([]);
 
   useEffect(() => {
     const consultarApi = async () => {
@@ -17,7 +19,7 @@ function App() {
 
       const respuesta = await axios.get(url);
 
-      console.log(respuesta.data.hits)
+      setImagenes(respuesta.data.hits)
     }
     consultarApi();
   }, [busqueda])
@@ -28,6 +30,11 @@ function App() {
         <p className="lead text-center">Buscador de Imágenes</p>
         <Formulario
           setBusqueda={setBusqueda}
+        />
+      </div>
+      <div className="row justify-content-center">
+        <ListadoImagenes
+          imagenes={imagenes}
         />
       </div>
     </div>
